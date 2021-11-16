@@ -26,6 +26,27 @@ typedef double element_t;
 
 #define FATAL_ERROR abort()
 
+
+#define VERIFICATION(plist)                                                                                             \
+{                                                                                                                       \
+    if (verificator(plist) != OK)                                                                                       \
+        {                                                                                                               \
+                FILE* log = fopen("log.txt", "a");                                                                      \
+                assert(log != nullptr);                                                                                 \
+                                                                                                                        \
+                fprintf(log, "ERROR: file %s line %d \n", __FILE__, __LINE__);                                          \
+                                plist_dump(plist, log);                                                                 \
+                                fflush(log);                                                                            \
+                                                                                                                        \
+                                if (plist->data != nullptr)                                                             \
+                                {                                                                                       \
+                                    abort();                                                                            \
+                                }                                                                                       \
+        };                                                                                                              \
+}
+
+//============================================================================================
+
 const size_t Add_capacity = 7;
 
 struct Plist_t
@@ -52,9 +73,9 @@ struct Plist
 
     size_t free_el_index;
 
-    int sort = NOT_SORTED;
+    int sort = 0XFF00;
 
-    int err = OK; 
+    int err = 1; 
 };
 
 
@@ -103,6 +124,11 @@ void plist_delete_el(struct Plist* list, size_t number);
 
 struct Plist_t* Plist_resize(struct Plist* list);
 
-size_t verification(struct Plist* list);
+size_t verificator(struct Plist* list);
+
+void plist_print_err(struct Plist* list, size_t error);
+
+void plist_dump(struct Plist* list, FILE* file);
+
 
 #endif 

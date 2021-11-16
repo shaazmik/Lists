@@ -1,4 +1,5 @@
-#include ".\List.h"
+#include "List.h"
+
 
 void check_nullptr(struct Plist* list)
 {
@@ -56,7 +57,6 @@ void plist_constructor(struct Plist* list, size_t user_capacity)
     {
         printf("Memory error, too a lot capacity\n\n");
         list->err = ERR_HUGE_CAPACITY;
-        //TODO dump
         return;
     }
     
@@ -95,7 +95,7 @@ size_t plist_insert_start(struct Plist* list, element_t value)
 {
     check_nullptr(list);
 
-    //TODO verificator + resize
+    VERIFICATION(list);
     
     size_t pos = list->free_el_index;
 
@@ -307,10 +307,6 @@ void plist_delete_el(struct Plist* list, size_t number)
 
     list->size--;
 
-    if (verification(list) != OK)
-    {
-        //TODO dd
-    }
 }
 
 
@@ -319,7 +315,7 @@ struct Plist_t* plist_resize(struct Plist* list)
 {
     check_nullptr(list);
 
-    //TODO verificator
+    //VERIFICATION(list);
 
     Plist_t* tmp_pointer = (Plist_t*)realloc(list->data, sizeof(Plist_t) * (list->capacity + Add_capacity) );
 
@@ -417,7 +413,7 @@ size_t verificator(struct Plist* list)
         
     while (list->data[count].value == Otrava) count--;
 
-    int next_index = count;
+    next_index = count;
 
     while (next_index != list->head && count >= 0)
     {
@@ -538,7 +534,6 @@ void plist_dump(struct Plist* list, FILE* file)
 
 
 
-//TODO dump
 //TODO linearization 
-//TODO list find'ы
+//TODO list find
 //TODO графический дамп
